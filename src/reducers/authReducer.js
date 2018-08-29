@@ -9,7 +9,7 @@ export default function (state = initialState, action) {
         case LOGIN:
             return {
                 ...state,
-                auth:action.payload
+                aaa:action.payload
             };
         default: return state;
     }

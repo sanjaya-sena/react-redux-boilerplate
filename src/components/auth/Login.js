@@ -9,6 +9,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
+import compose from 'recompose/compose';
 
 import { connect } from 'react-redux';
 import { login } from '../../actions/authActions'
@@ -74,18 +76,18 @@ class Login extends React.Component {
         return (
             <React.Fragment>
                 <CssBaseline />
-                <main className={styles.layout}>
-                    <Paper className={styles.paper}>
-                        <Avatar className={styles.avatar}>
+                <main className={this.props.classes.layout}>
+                    <Paper className={this.props.classes.paper}>
+                        <Avatar className={this.props.classes.avatar}>
                             <LockIcon />
                         </Avatar>
                         <Typography variant="headline">Sign in</Typography>
-                        <form className={styles.form} onSubmit={this.onSubmit}>
+                        <form className={this.props.classes.form} onSubmit={this.onSubmit}>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
                                 <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.onChange}/>
                             </FormControl>
-                            <FormControl margin="normal" required fullWidth>
+                            <FormControl margin="normal"  fullWidth>
                                 <InputLabel htmlFor="password">Password</InputLabel>
                                 <Input
                                     name="password"
@@ -99,7 +101,7 @@ class Login extends React.Component {
                                 fullWidth
                                 variant="raised"
                                 color="primary"
-                                className={styles.submit}
+                                className={this.props.classes.submit}
                             >
                                 Sign in
                             </Button>
@@ -119,4 +121,7 @@ const mapStateToProps = state => ({
     user: state.user
 });
 
-export default connect(mapStateToProps,{ login })(Login);
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps,{ login }))(Login);
