@@ -76,43 +76,10 @@ class Login extends React.Component {
         this.setState({[e.target.name]:e.target.value})
     }
 
-    getErrors(){
-        return this.props.errors.map(error => (
-            <div key={error}>
-                <h1>{error}</h1>
-                <p>{error}</p>
-            </div>
-        ))
-    }
-
-    renderErrors = () => {
-        const errors = this.props.errors;
-
-        const errorItems = Object.keys(errors).map( (key, i) => {
-            const error = errors[key][0];
-            return (
-                <li>
-                    {key}:<br/>
-                    {error}
-                </li>
-            )
-
-        });
-
-        return (
-            <ul>
-                {errorItems}
-            </ul>
-        )
-
-    };
-
     render(){
-        const errors = this.renderErrors();
         return (
             <React.Fragment>
                 <CssBaseline />
-                {errors}
                 <main className={this.props.classes.layout}>
                     <Paper className={this.props.classes.paper}>
                         <Avatar className={this.props.classes.avatar}>
@@ -123,6 +90,7 @@ class Login extends React.Component {
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
                                 <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.onChange}/>
+                                <span className={'error'}>{this.props.errors.email}</span>
                             </FormControl>
                             <FormControl margin="normal"  fullWidth>
                                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -132,6 +100,7 @@ class Login extends React.Component {
                                     id="password"
                                     onChange={this.onChange}
                                 />
+                                <span>{this.props.errors.password}</span>
                             </FormControl>
                             <Button
                                 type="submit"
