@@ -51,12 +51,16 @@ class Login extends React.Component {
 
     constructor(props){
         super(props);
+
         this.state = {
             email: '',
             password: ''
         };
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentWillReceiveProps(){
     }
 
     onSubmit(e){
@@ -72,10 +76,43 @@ class Login extends React.Component {
         this.setState({[e.target.name]:e.target.value})
     }
 
+    getErrors(){
+        return this.props.errors.map(error => (
+            <div key={error}>
+                <h1>{error}</h1>
+                <p>{error}</p>
+            </div>
+        ))
+    }
+
+    renderErrors = () => {
+        const errors = this.props.errors;
+
+        const errorItems = Object.keys(errors).map( (key, i) => {
+            const error = errors[key][0];
+            return (
+                <li>
+                    {key}:<br/>
+                    {error}
+                </li>
+            )
+
+        });
+
+        return (
+            <ul>
+                {errorItems}
+            </ul>
+        )
+
+    };
+
     render(){
+        const errors = this.renderErrors();
         return (
             <React.Fragment>
                 <CssBaseline />
+                {errors}
                 <main className={this.props.classes.layout}>
                     <Paper className={this.props.classes.paper}>
                         <Avatar className={this.props.classes.avatar}>
@@ -114,11 +151,13 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-    login: PropTypes.func.isRequired
+    login: PropTypes.func.isRequired,
+    errors: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-    user: state.user
+    user: state.user,
+    errors: state.auth.errors
 });
 
 

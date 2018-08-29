@@ -1,18 +1,21 @@
-import { LOGIN } from "./types";
+import {LOGIN, LOGIN_ERROR} from "./types";
+import axios from 'axios';
 
 export const login = (postData) =>dispatch => {
-    fetch('/auth/login',{
-        method: 'POST',
-        headers: {
-            'content-type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify(postData)
-    })
-        .then(res => res.json())
+
+    axios.post('/auth/login', postData)
+        .then(res => res.json()
         .then(token => dispatch({
-            type: LOGIN,
-            payload: token
-        }))
+        type: LOGIN,
+        payload: token
+    }))).catch(error => {
+        if(error.response.status === 422){
+            dispatch({
+                type: LOGIN_ERROR,
+                payload: error.response.data
+            })
+        }
+    });
 };
 
 
