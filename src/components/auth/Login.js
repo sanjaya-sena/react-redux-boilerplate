@@ -85,6 +85,7 @@ class Login extends React.Component {
                         <Avatar className={this.props.classes.avatar}>
                             <LockIcon />
                         </Avatar>
+                        <p>{this.props.errors.error}</p>
                         <Typography variant="headline">Sign in</Typography>
                         <form className={this.props.classes.form} onSubmit={this.onSubmit}>
                             <FormControl margin="normal" required fullWidth>
