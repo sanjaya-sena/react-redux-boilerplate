@@ -1,4 +1,4 @@
-import {LOGIN, LOGIN_ERROR} from "./types";
+import {LOGIN, ADD_ERRORS, REMOVE_ERRORS} from "./types";
 import axios from 'axios';
 
 export const login = (postData) =>dispatch => {
@@ -8,20 +8,16 @@ export const login = (postData) =>dispatch => {
             dispatch({
                 type: LOGIN,
                 payload: request.data.token
+            });
+            dispatch({
+                type: REMOVE_ERRORS
             })
         }
     )
         .catch(error => {
         if(error.response.status === 422){
             dispatch({
-                type: LOGIN_ERROR,
-                payload: error.response.data
-            })
-        }
-
-        if(error.response.status === 400){
-            dispatch({
-                type: LOGIN_ERROR,
+                type: ADD_ERRORS,
                 payload: error.response.data
             })
         }

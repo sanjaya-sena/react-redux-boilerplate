@@ -11,6 +11,11 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import compose from 'recompose/compose';
+import { DefaultButton } from 'office-ui-fabric-react/lib/Button';
+
+import { TextField, MaskedTextField } from 'office-ui-fabric-react/lib/TextField';
+import { MessageBar, MessageBarType } from 'office-ui-fabric-react/lib/MessageBar';
+import { ADD_ERRORS } from "../../actions/types";
 
 import { connect } from 'react-redux';
 import { login } from '../../actions/authActions'
@@ -73,7 +78,19 @@ class Login extends React.Component {
     }
 
     onChange(e) {
-        this.setState({[e.target.name]:e.target.value})
+        if(!!this.props.errors[e.target.name]){
+            let errors = Object.assign({},this.props.errors);
+            delete errors[e.target.name];
+            //
+            // this.props.dispatch({
+            //     type: ADD_ERRORS,
+            //     items: errors
+            // })
+        }else{
+            this.setState({
+                [e.target.name]:e.target.value
+            });
+        }
     }
 
     render(){
@@ -82,36 +99,44 @@ class Login extends React.Component {
                 <CssBaseline />
                 <main className={this.props.classes.layout}>
                     <Paper className={this.props.classes.paper}>
+                        {this.props.errors.error?(
+                            <MessageBar messageBarType={MessageBarType.error}>
+                                {this.props.errors.error}
+                            </MessageBar>
+                        ):''}
                         <Avatar className={this.props.classes.avatar}>
                             <LockIcon />
                         </Avatar>
-                        <p>{this.props.errors.error}</p>
+
+
                         <Typography variant="headline">Sign in</Typography>
                         <form className={this.props.classes.form} onSubmit={this.onSubmit}>
                             <FormControl margin="normal" required fullWidth>
-                                <InputLabel htmlFor="email">Email Address</InputLabel>
-                                <Input id="email" name="email" autoComplete="email" autoFocus onChange={this.onChange}/>
-                                <span className={'error'}>{this.props.errors.email}</span>
-                            </FormControl>
-                            <FormControl margin="normal"  fullWidth>
-                                <InputLabel htmlFor="password">Password</InputLabel>
-                                <Input
-                                    name="password"
-                                    type="password"
-                                    id="password"
+                                <TextField
+                                    name="email"
+                                    email
+                                    autoFocus
+                                    label="Email Address"
+                                    errorMessage={this.props.errors.email}
                                     onChange={this.onChange}
                                 />
-                                <span>{this.props.errors.password}</span>
                             </FormControl>
-                            <Button
+                            <FormControl margin="normal"  fullWidth>
+                                <TextField
+                                    name="password"
+                                    type="password"
+                                    label="Password"
+                                    errorMessage={this.props.errors.password}
+                                    onChange={this.onChange}
+                                />
+                            </FormControl>
+                            <DefaultButton
+                                text='Sign in'
+                                primary={ true }
                                 type="submit"
                                 fullWidth
                                 variant="raised"
-                                color="primary"
-                                className={this.props.classes.submit}
-                            >
-                                Sign in
-                            </Button>
+                            />
                         </form>
                     </Paper>
                 </main>
@@ -127,9 +152,8 @@ Login.propTypes = {
 
 const mapStateToProps = state => ({
     user: state.user,
-    errors: state.auth.errors
+    errors: state.errors.items
 });
-
 
 export default compose(
     withStyles(styles),
