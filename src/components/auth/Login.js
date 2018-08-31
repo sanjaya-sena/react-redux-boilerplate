@@ -86,11 +86,10 @@ class Login extends React.Component {
             //     type: ADD_ERRORS,
             //     items: errors
             // })
-        }else{
-            this.setState({
-                [e.target.name]:e.target.value
-            });
         }
+        this.setState({
+            [e.target.name]:e.target.value
+        });
     }
 
     render(){
