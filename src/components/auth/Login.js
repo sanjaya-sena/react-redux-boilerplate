@@ -94,52 +94,92 @@ class Login extends React.Component {
 
     render(){
         return (
-            <React.Fragment>
-                <CssBaseline />
-                <main className={this.props.classes.layout}>
-                    <Paper className={this.props.classes.paper}>
-                        {this.props.errors.error?(
-                            <MessageBar messageBarType={MessageBarType.error}>
-                                {this.props.errors.error}
-                            </MessageBar>
-                        ):''}
-                        <Avatar className={this.props.classes.avatar}>
-                            <LockIcon />
-                        </Avatar>
+            <div className="peers ai-s fxw-nw h-100vh">
+                <div className="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv" style={{backgroundImage: 'url("assets/static/images/bg.jpg")'}}>
+                    <div className="pos-a centerXY">
+                        <div className="bgc-white bdrs-50p pos-r" style={{width: 120, height: 120}}>
+                            <img className="pos-a centerXY" src="assets/static/images/logo.png" alt />
+                        </div>
+                    </div>
+                </div>
+                <div className="col-12 col-md-4 peer pX-40 pY-80 h-100 bgc-white scrollable pos-r" style={{minWidth: 320}}>
+                    <h4 className="fw-300 c-grey-900 mB-40">Login</h4>
+                    <form onSubmit={this.onSubmit}>
+                        <div className="form-group">
+                            <label className="text-normal text-dark">Username</label>
+                            <input name="email" className="form-control" placeholder="John Doe" onChange={this.onChange} />
+                            <p className="text-danger">{this.props.errors.email}</p>
+                        </div>
+                        <div className="form-group">
+                            <label className="text-normal text-dark">Password</label>
+                            <input name="password" type="password" className="form-control" placeholder="Password" onChange={this.onChange}/>
+                            <p className="text-danger">{this.props.errors.password}</p>
+                        </div>
+                        <div className="form-group">
+                            <div className="peers ai-c jc-sb fxw-nw">
+                                <div className="peer">
+                                    <div className="checkbox checkbox-circle checkbox-info peers ai-c">
 
-
-                        <Typography variant="headline">Sign in</Typography>
-                        <form className={this.props.classes.form} onSubmit={this.onSubmit}>
-                            <FormControl margin="normal" required fullWidth>
-                                <TextField
-                                    name="email"
-                                    email
-                                    autoFocus
-                                    label="Email Address"
-                                    errorMessage={this.props.errors.email}
-                                    onChange={this.onChange}
-                                />
-                            </FormControl>
-                            <FormControl margin="normal"  fullWidth>
-                                <TextField
-                                    name="password"
-                                    type="password"
-                                    label="Password"
-                                    errorMessage={this.props.errors.password}
-                                    onChange={this.onChange}
-                                />
-                            </FormControl>
-                            <DefaultButton
-                                text='Sign in'
-                                primary={ true }
-                                type="submit"
-                                fullWidth
-                                variant="raised"
-                            />
-                        </form>
-                    </Paper>
-                </main>
-            </React.Fragment>
+                                    </div>
+                                </div>
+                                <div className="peer">
+                                    <button className="btn btn-primary">Login</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            {this.props.errors.error?
+                                ( <div className="alert alert-danger" role="alert">{this.props.errors.error}</div> ):''}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            // <React.Fragment>
+            //     <CssBaseline />
+            //     <main className={this.props.classes.layout}>
+            //         <Paper className={this.props.classes.paper}>
+            //             {this.props.errors.error?(
+            //                 <MessageBar messageBarType={MessageBarType.error}>
+            //                     {this.props.errors.error}
+            //                 </MessageBar>
+            //             ):''}
+            //             <Avatar className={this.props.classes.avatar}>
+            //                 <LockIcon />
+            //             </Avatar>
+            //
+            //
+            //             <Typography variant="headline">Sign in</Typography>
+            //             <form className={this.props.classes.form} onSubmit={this.onSubmit}>
+            //                 <FormControl margin="normal" required fullWidth>
+            //                     <TextField
+            //                         name="email"
+            //                         email
+            //                         autoFocus
+            //                         label="Email Address"
+            //                         errorMessage={this.props.errors.email}
+            //                         onChange={this.onChange}
+            //                     />
+            //                 </FormControl>
+            //                 <FormControl margin="normal"  fullWidth>
+            //                     <TextField
+            //                         name="password"
+            //                         type="password"
+            //                         label="Password"
+            //                         errorMessage={this.props.errors.password}
+            //                         onChange={this.onChange}
+            //                     />
+            //                 </FormControl>
+            //                 <DefaultButton
+            //                     text='Sign in'
+            //                     primary={ true }
+            //                     type="submit"
+            //                     fullWidth
+            //                     variant="raised"
+            //                 />
+            //             </form>
+            //         </Paper>
+            //     </main>
+            // </React.Fragment>
         );
 };
 }
