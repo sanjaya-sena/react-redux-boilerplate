@@ -7,10 +7,11 @@ export const login = (postData) =>dispatch => {
         (request)=>{
             dispatch({
                 type: LOGIN,
-                payload: request.data.token
+                payload: request.data
             });
-            localStorage.setItem('token',request.data.token);
-            
+            console.log(request.data);
+            localStorage.setItem('auth',JSON.stringify(request.data));
+
             dispatch({
                 type: REMOVE_ERRORS
             })

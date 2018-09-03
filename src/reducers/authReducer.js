@@ -1,7 +1,8 @@
 import {LOGIN, LOGIN_ERROR} from "../actions/types";
 
 const initialState = {
-    token:""
+    token:"",
+    user:{}
 };
 
 export default function (state = initialState, action) {
@@ -9,7 +10,8 @@ export default function (state = initialState, action) {
         case LOGIN:
             return {
                 ...state,
-                token:action.payload
+                token:action.payload.token,
+                user:action.payload.user
             };
         default: return state;
     }

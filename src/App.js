@@ -7,10 +7,11 @@ import store from "./store";
 
 class App extends Component {
   render() {
+      let auth = JSON.parse(localStorage.getItem('auth'));
     return (
         <Provider store={store}>
             <div>
-                {localStorage.getItem('token')?(
+                {auth && auth.user && auth.token?(
                     <AdminPanel />
                 ):(
                     <Login />

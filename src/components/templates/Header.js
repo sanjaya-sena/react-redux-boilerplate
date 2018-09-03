@@ -3,6 +3,7 @@ import React from 'react';
 class Header extends React.Component {
 
     render(){
+        let auth = JSON.parse(localStorage.getItem('auth'));
         return (
             <div className="header navbar">
                 <div className="header-container">
@@ -42,7 +43,7 @@ class Header extends React.Component {
                                                 </div>
                                                 <div className="peer peer-greed">
                               <span>
-                                <span className="fw-500">John Doe</span>
+                                <span className="fw-500">John Doe </span>
                                 <span className="c-grey-600">liked your <span className="text-dark">post</span>
                                 </span>
                               </span>
@@ -188,7 +189,7 @@ class Header extends React.Component {
                                     <img className="w-2r bdrs-50p" src="https://randomuser.me/api/portraits/men/10.jpg" alt />
                                 </div>
                                 <div className="peer">
-                                    <span className="fsz-sm c-grey-900">John Doe</span>
+                                    <span className="fsz-sm c-grey-900">{auth && auth.user? auth.user.name:''}</span>
                                 </div>
                             </a>
                             <ul className="dropdown-menu fsz-sm">
