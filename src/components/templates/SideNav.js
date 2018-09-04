@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 class SideNav extends React.Component {
 
@@ -51,29 +52,37 @@ class SideNav extends React.Component {
                     {/* ### $Sidebar Menu ### */}
                     <ul className="sidebar-menu scrollable pos-r">
                         <li className="nav-item mT-30 active">
-                            <a className="sidebar-link" href="index.html">
+                            <Link to="/home">
+                                <a className="sidebar-link">
                             <span className="icon-holder">
                                 <i className="c-blue-500 ti-home" />
                             </span>
-                            <span className="title">Dashboard</span>
-                            </a>
+                                    <span className="title">Dashboard</span>
+                                </a>
+                            </Link>
                         </li>
+
                         <li className={this.state.item === 'table' ?'nav-item dropdown open':'nav-item dropdown'} >
                             <a className="dropdown-toggle" href="javascript:void(0);" onClick={this.handleClick}  id="table">
                                     <span className="icon-holder">
-                                        <i className="c-orange-500 ti-layout-list-thumb" />
+                                        <i className="c-orange-500 ti-user" />
                                     </span>
-                                <span className="title">Tables</span>
+                                <span className="title">User</span>
                                 <span className="arrow">
                     <i className="ti-angle-right" />
                   </span>
                             </a>
                             <ul className="dropdown-menu" >
+
                                 <li>
-                                    <a className="sidebar-link" href="basic-table.html">Basic Table</a>
+                                    <Link to="/users">
+                                        <a className="sidebar-link"><i className="ti-eye"> View Users</i></a>
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a className="sidebar-link" href="datatable.html">Data Table</a>
+                                    <Link to="/user/create">
+                                        <a className="sidebar-link"><i className="ti-plus"> New User</i></a>
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
