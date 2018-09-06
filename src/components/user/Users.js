@@ -3,30 +3,75 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers } from "../../actions/userActions";
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
+import {  AgGridReact } from 'ag-grid-react';
+import 'ag-grid/dist/styles/ag-grid.css';
+import 'ag-grid/dist/styles/ag-theme-bootstrap.css';
+import 'ag-grid/dist/styles/ag-theme-material.css';
+import 'ag-grid/dist/styles/ag-theme-balham.css';
+
 
 class Users extends React.Component {
 
-    componentWillMount(){
-        this.props.fetchUsers();
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            gridOptions : {
+            columnDefs: [
+                {headerName: "ID", field: "id",
+                    width: 100,
+                    filterParams: {newRowsAction: 'keep'},
+                    suppressSizeToFit: true,
+                    checkboxSelection: function(params) {
+                        // we put checkbox on the name if we are not doing grouping
+                        return params.columnApi.getRowGroupColumns().length === 0;
+                    },
+                    headerCheckboxSelection: function(params) {
+                        // we put checkbox on the name if we are not doing grouping
+                        return params.columnApi.getRowGroupColumns().length === 0;
+                    }
+                },
+                {headerName: "User Name", field: "name"},
+                {headerName: "Email", field: "email"}
+            ],
+                rowSelection:"multiple",
+                showToolPanel: true,
+                popupParent: document.querySelector("body"),
+                gridAutoHeight:true,
+                paginationPageSize: 60
+            },
+            api:{}
+
+        };
+        this.onExportClick = this.onExportClick.bind(this);
+        this.test = this.test.bind(this);
     }
-    
+
+    componentWillMount(){
+       this.props.fetchUsers();
+    }
+
     componentWillReceiveProps(nextProps){
 
     };
 
+    componentDidMount(){
+        // this.setState({rowData:this.props.users});
+    }
+    test(a){
+        this.setState({
+            api:a.api
+        });
+        a.api.sizeColumnsToFit();
+    }
+    onExportClick(){
+        this.state.api.exportDataAsCsv(this.state.api.getDataAsCsv());
+    }
+
+
     render(){
-        const users = this.props.users.map(user => (
-            <tr key={user.id}>
-                <td>{user.id}</td>
-                <td><strong>{user.name}</strong></td>
-                <td>{user.email}</td>
-                <td width="100px">
-                    <button className="btn btn-outline-primary btn-sm"><i className="fa fa-edit"> </i></button>
-                    <button className="btn  btn-outline-warning btn-sm"><i className="fa fa-trash"> </i></button>
-                </td>
-            </tr>
-        ));
         return (
+
             <div className="animated fadeIn">
                 <Row>
                     <Col lg={12}>
@@ -35,11 +80,29 @@ class Users extends React.Component {
                                 <strong><i className="fa fa-user"> </i> Users List</strong>
                             </CardHeader>
                             <CardBody>
-                                <Table responsive striped hover className="table-sm">
-                                    <tbody>
-                                    {users}
-                                    </tbody>
-                                </Table>
+                                <Row>
+                                    <Col>
+                                        <button className="btn btn-success btn-sm pull-right" onClick={this.onExportClick}>Export</button>
+                                    </Col>
+                                </Row>
+                                <Row >
+                                    <Col lg={12} className="ag-theme-balham"
+                                         >
+                                        <AgGridReact
+                                            rowData={this.props.users}
+                                            suppressRowClickSelection
+                                            enableColResize
+                                            enableSorting
+                                            enableFilter
+                                            groupHeaders
+                                            pagination
+                                            paginationAutoPageSize
+                                            gridOptions={this.state.gridOptions}
+                                            onGridReady={this.test}
+                                        >
+                                        </AgGridReact>
+                                    </Col>
+                                </Row>
                             </CardBody>
                         </Card>
                     </Col>
@@ -48,6 +111,28 @@ class Users extends React.Component {
         );
     };
 }
+// enableSorting: true,
+//     suppressRowClickSelection: true,
+//     groupSelectsChildren: true,
+//     debug: true,
+//     rowSelection: 'multiple',
+//     enableColResize: true,
+//     rowGroupPanelShow: 'always',
+//     pivotPanelShow: 'always',
+//     enableRangeSelection: true,
+//     columnDefs: columnDefs,
+//     pagination: true,
+//     paginationPageSize: 10,
+//     autoGroupColumnDef: autoGroupColumnDef,
+//     paginationNumberFormatter: function(params) {
+//     return '[' + params.value.toLocaleString() + ']';
+// },
+// defaultColDef: {
+//     editable: true,
+//         enableRowGroup: true,
+//         enablePivot: true,
+//         enableValue: true
+// }
 
 Users.propTypes = {
     fetchUsers: PropTypes.func.isRequired,
