@@ -2,12 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers } from "../../actions/userActions";
+import UserEdit from "./UserEdit";
 import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-import {  AgGridReact } from 'ag-grid-react';
-import 'ag-grid/dist/styles/ag-grid.css';
-import 'ag-grid/dist/styles/ag-theme-bootstrap.css';
-import 'ag-grid/dist/styles/ag-theme-material.css';
-import 'ag-grid/dist/styles/ag-theme-balham.css';
+import axios from "axios";
+import {ADD_ERRORS, LOGIN, REMOVE_ERRORS} from "../../actions/types";
 
 
 class Users extends React.Component {
@@ -16,35 +14,11 @@ class Users extends React.Component {
         super(props);
 
         this.state = {
-            gridOptions : {
-            columnDefs: [
-                {headerName: "ID", field: "id",
-                    width: 100,
-                    filterParams: {newRowsAction: 'keep'},
-                    suppressSizeToFit: true,
-                    checkboxSelection: function(params) {
-                        // we put checkbox on the name if we are not doing grouping
-                        return params.columnApi.getRowGroupColumns().length === 0;
-                    },
-                    headerCheckboxSelection: function(params) {
-                        // we put checkbox on the name if we are not doing grouping
-                        return params.columnApi.getRowGroupColumns().length === 0;
-                    }
-                },
-                {headerName: "User Name", field: "name"},
-                {headerName: "Email", field: "email"}
-            ],
-                rowSelection:"multiple",
-                showToolPanel: true,
-                popupParent: document.querySelector("body"),
-                gridAutoHeight:true,
-                paginationPageSize: 60
-            },
-            api:{}
-
+            modal: false
         };
-        this.onExportClick = this.onExportClick.bind(this);
-        this.test = this.test.bind(this);
+
+        this.onDeleteClick = this.onDeleteClick.bind(this);
+        this.onEditClick = this.onEditClick.bind(this);
     }
 
     componentWillMount(){
@@ -58,20 +32,43 @@ class Users extends React.Component {
     componentDidMount(){
         // this.setState({rowData:this.props.users});
     }
-    test(a){
-        this.setState({
-            api:a.api
+
+    onEditClick(e){
+        axios.get('/users/100').then(
+            (request)=>{
+                console.log(request)
+            }
+        ).catch( error => {
+            console.log(error.response.data.data);
+
         });
-        a.api.sizeColumnsToFit();
-    }
-    onExportClick(){
-        this.state.api.exportDataAsCsv(this.state.api.getDataAsCsv());
+
+        this.setState({
+            modal:!this.state.modal
+        })
+
     }
 
+    onDeleteClick(e){
+
+    }
 
     render(){
+        let users = this.props.users.map((user)=>{
+            return (
+                <tr>
+                    <td scope="row">{user.id}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.name}</td>
+                    <td style={{width:"80px"}}>
+                        <button id={user.id} className="btn btn-success btn-sm" onClick={this.onEditClick}><i className="fa fa-edit"> </i></button>
+                        <button id={user.id} className="btn btn-danger btn-sm" onClick={this.onDeleteClick}><i className="fa fa-trash"> </i></button>
+                    </td>
+                </tr>
+            );
+        });
         return (
-
             <div className="animated fadeIn">
                 <Row>
                     <Col lg={12}>
@@ -80,27 +77,23 @@ class Users extends React.Component {
                                 <strong><i className="fa fa-user"> </i> Users List</strong>
                             </CardHeader>
                             <CardBody>
-                                <Row>
-                                    <Col>
-                                        <button className="btn btn-success btn-sm pull-right" onClick={this.onExportClick}>Export</button>
-                                    </Col>
-                                </Row>
                                 <Row >
-                                    <Col lg={12} className="ag-theme-balham"
-                                         >
-                                        <AgGridReact
-                                            rowData={this.props.users}
-                                            suppressRowClickSelection
-                                            enableColResize
-                                            enableSorting
-                                            enableFilter
-                                            groupHeaders
-                                            pagination
-                                            paginationAutoPageSize
-                                            gridOptions={this.state.gridOptions}
-                                            onGridReady={this.test}
-                                        >
-                                        </AgGridReact>
+                                    <Col lg={12}>
+                                        <Table responsive className="table-sm table-clear table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Table heading</th>
+                                                <th>Table heading</th>
+                                                <th>Table heading</th>
+                                                <th style={{width:"80px"}}> </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {users}
+                                            <UserEdit modal={this.state.modal} onEditClick={this.onEditClick}/>
+                                            </tbody>
+                                        </Table>
                                     </Col>
                                 </Row>
                             </CardBody>
@@ -111,28 +104,6 @@ class Users extends React.Component {
         );
     };
 }
-// enableSorting: true,
-//     suppressRowClickSelection: true,
-//     groupSelectsChildren: true,
-//     debug: true,
-//     rowSelection: 'multiple',
-//     enableColResize: true,
-//     rowGroupPanelShow: 'always',
-//     pivotPanelShow: 'always',
-//     enableRangeSelection: true,
-//     columnDefs: columnDefs,
-//     pagination: true,
-//     paginationPageSize: 10,
-//     autoGroupColumnDef: autoGroupColumnDef,
-//     paginationNumberFormatter: function(params) {
-//     return '[' + params.value.toLocaleString() + ']';
-// },
-// defaultColDef: {
-//     editable: true,
-//         enableRowGroup: true,
-//         enablePivot: true,
-//         enableValue: true
-// }
 
 Users.propTypes = {
     fetchUsers: PropTypes.func.isRequired,
