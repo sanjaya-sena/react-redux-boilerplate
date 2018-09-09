@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers, fetchUser } from "../../actions/userActions";
 import UserEdit from "./UserEdit";
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table, Modal, ModalBody, ModalFooter, ModalHeader, Button } from 'reactstrap';
+import { Badge, Card, CardBody, CardHeader, Col, Row, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Table, Divider, Tag, Button, Modal } from 'antd';
+
 
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import axios from "axios";
@@ -11,7 +13,31 @@ import {ADD_ERRORS, LOGIN, REMOVE_ERRORS} from "../../actions/types";
 import {Login, Page404, Page500, Register} from "../../views/Pages";
 import {DefaultLayout} from "../../containers";
 
+const { Column, ColumnGroup } = Table;
+const ButtonGroup = Button.Group;
 
+const data = [{
+    key: '1',
+    firstName: 'John',
+    lastName: 'Brown',
+    age: 32,
+    address: 'New York No. 1 Lake Park',
+    tags: ['nice', 'developer'],
+}, {
+    key: '2',
+    firstName: 'Jim',
+    lastName: 'Green',
+    age: 42,
+    address: 'London No. 1 Lake Park',
+    tags: ['loser'],
+}, {
+    key: '3',
+    firstName: 'Joe',
+    lastName: 'Black',
+    age: 32,
+    address: 'Sidney No. 1 Lake Park',
+    tags: ['cool', 'teacher'],
+}];
 class Users extends React.Component {
 
     constructor(props) {
@@ -56,70 +82,125 @@ class Users extends React.Component {
 
     }
 
+    handleSearch = (selectedKeys, confirm) => () => {
+        confirm();
+        this.setState({ searchText: selectedKeys[0] });
+    };
+
+    handleReset = clearFilters => () => {
+        clearFilters();
+        this.setState({ searchText: '' });
+    };
+
     render(){
-        let users = this.props.users.map((user)=>{
-            return (
-                <tr>
-                    <td scope="row">{user.id}</td>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role.name}</td>
-                    <td>
-                        {user.is_active === 1?(
-                            <span className="mr-1 badge badge-success badge-pill">Active</span>
-                        ):(
-                            <span className="mr-1 badge badge-danger badge-pill">Disabled</span>
-                        )}
-                    </td>
-                    <td style={{width:"80px"}}>
-                        <button id={user.id} className="btn btn-success btn-sm" onClick={this.onEditClick}><i className="fa fa-edit"> </i></button>
-                        <button id={user.id} className="btn btn-danger btn-sm" onClick={this.onDeleteClick}><i className="fa fa-trash"> </i></button>
-                    </td>
-                </tr>
-            );
-        });
-        return (
+
+        return(
             <div className="animated fadeIn">
+
                 <Row>
+
                     <Col lg={12}>
+
                         <Card>
+
                             <CardHeader>
+
                                 <strong><i className="fa fa-user"> </i> Users List</strong>
+
                             </CardHeader>
+
                             <CardBody>
+
                                 <Row >
+
                                     <Col lg={12}>
-                                        <Table responsive className="table-sm table-clear table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Name</th>
-                                                <th>Email</th>
-                                                <th>Role</th>
-                                                <th>Status</th>
-                                                <th style={{width:"80px"}}> </th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {users}
-                                            </tbody>
+
+                                        <Table dataSource={this.props.users} size="small">
+                                            <Column
+                                                title="Name"
+                                                dataIndex="name"
+                                                key="name"
+                                            />
+                                            <Column
+                                                title="Email"
+                                                dataIndex="email"
+                                                key="email"
+                                            />
+                                            <Column
+                                                title="Role"
+                                                dataIndex="role"
+                                                key="role"
+
+                                                render={role => (
+                                                    <span>
+                                <Tag color="blue" key={role.id}>{role.name}</Tag>
+                        </span>
+                                                )}
+                                            />
+                                            <Column
+                                                title="Status"
+                                                dataIndex="is_active"
+                                                key="is_active"
+                                                render={is_active => (
+                                                    <span>
+                            {is_active===1?(
+                                <Tag color="green" key={is_active}>Active</Tag>
+                            ):(
+                                <Tag color="red" key={is_active}>Disabled</Tag>
+                            )}
+
+                        </span>
+                                                )}
+                                            />
+                                            <Column
+                                                title="Action"
+                                                dataIndex="id"
+                                                key="id"
+                                                render={(id) => (
+                                                    <span>
+                            <ButtonGroup>
+                              <Button id={id} onClick={this.onEditClick} type="default" icon="edit"/>
+                              <Button type="danger" icon="delete"/>
+                            </ButtonGroup>
+                        </span>
+                                                )}
+                                            />
+
                                         </Table>
+
+
                                     </Col>
+
                                 </Row>
+
                             </CardBody>
+
                         </Card>
+
                     </Col>
+
                 </Row>
+
                 <Row>
-                    <Modal isOpen={this.state.modal} toggle={this.toggleClose} className={'modal-md'}>
-                        <ModalHeader toggle={this.toggleClose}><i className="fa fa-user"> </i> Edit User</ModalHeader>
-                        <ModalBody>
-                            <UserEdit userID={this.state.userID} />
-                        </ModalBody>
+
+
+                    <Modal
+                        title="Edit User"
+                        visible={this.state.modal}
+                        onCancel={this.toggleClose}
+                        zIndex={10000}
+                        centered
+                        footer=""
+                    >
+                        <UserEdit userID={this.state.userID} />
                     </Modal>
+
                 </Row>
+
             </div>
-        );
+
+        )
+
     };
 }
 

@@ -52,7 +52,16 @@ class UserEdit extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
+        axios.get('/users/'+newProps.userID).then(
+            (request)=>{
+                this.setState({
+                    user:request.data.data
+                })
+            }
+        ).catch( error => {
+            console.log(error.response.data.data);
 
+        });
     }
 
     componentDidMount(){
@@ -129,7 +138,7 @@ class UserEdit extends React.Component {
         return (
 
             <div>
-                {this.state.user.name ?
+                {this.state.user!=={} ?
                     (
                         <Form className="" onSubmit={this.onSubmit}>
                             <FormGroup>
