@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00dbcdff-3d10-47d7-94a9-45512f6ca2b7" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/src/components/user/NewUser.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/user/UserEdit.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/UserEdit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/user/Users.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/user/Users.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -183,11 +183,20 @@
       <file leaf-file-name="Users.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/user/Users.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="121" column="58" lean-forward="true" selection-start-line="121" selection-start-column="58" selection-end-line="121" selection-end-column="58" />
+            <state relative-caret-position="153">
+              <caret line="201" column="145" selection-start-line="201" selection-start-column="145" selection-end-line="201" selection-end-column="145" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NewUser.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/user/NewUser.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="591">
+              <caret line="131" column="30" lean-forward="true" selection-start-line="131" selection-start-column="30" selection-end-line="131" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -233,19 +242,21 @@
       <find>styles</find>
       <find>tab</find>
       <find>joj</find>
-      <find>c</find>
       <find>cm</find>
       <find>user</find>
       <find>:</find>
       <find>input is i</find>
       <find>validation</find>
       <find>inva</find>
+      <find>c</find>
+      <find>toggleClose</find>
     </findStrings>
     <replaceStrings>
       <replace>this.classes</replace>
       <replace>'20%'</replace>
       <replace>this.props.classes</replace>
       <replace>=</replace>
+      <replace>onNewUserClick</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -288,6 +299,7 @@
         <option value="$PROJECT_DIR$/src/actions/userActions.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/src/components/user/UserEdit.js" />
+        <option value="$PROJECT_DIR$/src/components/user/NewUser.js" />
         <option value="$PROJECT_DIR$/src/components/user/Users.js" />
       </list>
     </option>
@@ -347,7 +359,7 @@
       <path value="$PROJECT_DIR$/src/views/Widgets/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-9" />
     <option name="y" value="-9" />
     <option name="width" value="1383" />
@@ -369,24 +381,6 @@
             <path>
               <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
               <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
-              <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-              <item name="antd" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
-              <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
-              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
-              <item name="antd" type="462c0819:PsiDirectoryNode" />
-              <item name="dist" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
-              <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -399,6 +393,33 @@
               <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="actions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
+              <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
+              <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="auth" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
+              <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="react-redux-boilerplate" type="b2602c69:ProjectViewProjectNode" />
+              <item name="react-redux-boilerplate" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="user" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -422,10 +443,10 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\sanja\Desktop\Workspace\react-redux-boilerplate\src\components\user" />
       <recent name="D:\Projects\Personal\react-redux-boilerplate\src\components\user" />
       <recent name="D:\Projects\Personal\react-redux-boilerplate\public" />
       <recent name="D:\Projects\Personal\react-redux-boilerplate\src" />
-      <recent name="C:\Users\sanja\Desktop\Workspace\react-redux-boilerplate\src\components\user" />
       <recent name="C:\Users\sanja\Desktop\Workspace\react-redux-boilerplate\src\components\templates" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -471,10 +492,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="170929000" />
+    <option name="totallyTimeSpent" value="174199000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TypeScript" order="8" />
@@ -537,13 +558,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/actions/postActions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="1" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../theme/build/blank.html" />
     <entry file="file://$PROJECT_DIR$/../theme/src/blank.html" />
     <entry file="file://$PROJECT_DIR$/src/components/templates/Footer.js">
@@ -765,16 +779,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/views/Notifications/Modals/Modals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="88" column="18" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="77" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/reducers/authReducer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -881,10 +885,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/views/Notifications/Modals/Modals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="88" column="18" selection-start-line="88" selection-start-column="18" selection-end-line="88" selection-end-column="77" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/user/NewUser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="591">
+          <caret line="131" column="30" lean-forward="true" selection-start-line="131" selection-start-column="30" selection-end-line="131" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/user/Users.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="121" column="58" lean-forward="true" selection-start-line="121" selection-start-column="58" selection-end-line="121" selection-end-column="58" />
+        <state relative-caret-position="153">
+          <caret line="201" column="145" selection-start-line="201" selection-start-column="145" selection-end-line="201" selection-end-column="145" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>

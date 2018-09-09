@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers, fetchUser } from "../../actions/userActions";
 import UserEdit from "./UserEdit";
+import NewUser from "./NewUser";
 import { Badge, Card, CardBody, CardHeader, Col, Row, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Table, Divider, Tag, Button, Modal } from 'antd';
 
@@ -51,11 +52,13 @@ class Users extends React.Component {
         this.onDeleteClick = this.onDeleteClick.bind(this);
         this.onEditClick = this.onEditClick.bind(this);
         this.toggleClose = this.toggleClose.bind(this);
+        this.onNewUserClick = this.onNewUserClick.bind(this);
     }
 
     toggleClose(){
         this.setState({
-            modal:false
+            modal:false,
+            userID:""
         })
     };
 
@@ -82,6 +85,13 @@ class Users extends React.Component {
 
     }
 
+    onNewUserClick(e){
+        this.setState({
+            modal:!this.state.modal,
+            userID:""
+        });
+    }
+
     handleSearch = (selectedKeys, confirm) => () => {
         confirm();
         this.setState({ searchText: selectedKeys[0] });
@@ -105,7 +115,8 @@ class Users extends React.Component {
 
                             <CardHeader>
 
-                                <strong><i className="fa fa-user"> </i> Users List</strong>
+                                <i className="fa fa-user"> </i> Users List
+                                <button onClick={this.onNewUserClick} className="btn btn-primary btn-sm pull-right"><i className="fa fa-plus"> </i> New User</button>
 
                             </CardHeader>
 
@@ -115,11 +126,12 @@ class Users extends React.Component {
 
                                     <Col lg={12}>
 
-                                        <Table dataSource={this.props.users} size="small">
+                                        <Table dataSource={this.props.users} size="small" scroll={{ x: 240 }}>
                                             <Column
                                                 title="Name"
                                                 dataIndex="name"
                                                 key="name"
+                                                fixed="left"
                                             />
                                             <Column
                                                 title="Email"
@@ -130,7 +142,6 @@ class Users extends React.Component {
                                                 title="Role"
                                                 dataIndex="role"
                                                 key="role"
-
                                                 render={role => (
                                                     <span>
                                 <Tag color="blue" key={role.id}>{role.name}</Tag>
@@ -156,13 +167,16 @@ class Users extends React.Component {
                                                 title="Action"
                                                 dataIndex="id"
                                                 key="id"
+
+                                                fixed="right"
+                                                width={100}
                                                 render={(id) => (
                                                     <span>
-                            <ButtonGroup>
-                              <Button id={id} onClick={this.onEditClick} type="default" icon="edit"/>
-                              <Button type="danger" icon="delete"/>
-                            </ButtonGroup>
-                        </span>
+                                                        <ButtonGroup>
+                                                          <Button id={id} onClick={this.onEditClick} type="default" icon="edit"/>
+                                                          <Button type="danger" icon="delete"/>
+                                                        </ButtonGroup>
+                                                    </span>
                                                 )}
                                             />
 
@@ -185,14 +199,15 @@ class Users extends React.Component {
 
 
                     <Modal
-                        title="Edit User"
+                        title={this.state.userID === ""?(<h5><i className="fa fa-user"> </i> New User</h5>):(<h5><i className="fa fa-user"> </i> Edit User</h5>)}
                         visible={this.state.modal}
                         onCancel={this.toggleClose}
                         zIndex={10000}
                         centered
                         footer=""
                     >
-                        <UserEdit userID={this.state.userID} />
+                        {this.state.userID === ""?(<NewUser />):(<UserEdit userID={this.state.userID} />)}
+
                     </Modal>
 
                 </Row>
