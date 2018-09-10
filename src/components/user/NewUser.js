@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchUsers, updateUser, fetchUser } from "../../actions/userActions";
+import { fetchUsers, createUser, resetUsersSuccess, resetUsersMessage } from "../../actions/userActions";
 
 
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -51,7 +51,42 @@ class NewUser extends React.Component {
     }
 
     componentWillReceiveProps(newProps){
+        if (newProps.success === true){
+            notification.open({
+                message: 'Success',
+                description: newProps.message_notify,
+                style: {
+                    color:"green"
+                },
+            });
 
+            this.setState({
+                user:{
+                    name:'',
+                    email:'',
+                    password:'',
+                    password_confirmation:'',
+                    role_id:'',
+                    is_active:''
+                }
+            });
+
+            this.props.resetUsersSuccess();
+            this.props.resetUsersMessage();
+        }
+
+        // if (newProps.clearForm === true){
+        //     this.setState({
+        //         user:{
+        //             name:'',
+        //             email:'',
+        //             password:'',
+        //             password_confirmation:'',
+        //             role_id:'',
+        //             is_active:''
+        //         }
+        //     });
+        // }
     }
 
     componentDidMount(){
@@ -74,24 +109,19 @@ class NewUser extends React.Component {
                 ...this.state.user,
                 [e.target.name]:e.target.value
             }});
-
     }
 
     onSubmit(e){
         e.preventDefault();
 
-        const user = this.state.user;
-
         notification.config({
             placement: 'bottomRight',
         });
-        notification.open({
-            message: 'Success',
-            description: 'User details updated successfully !',
-            style: {
-                color:"green"
-            },
-        });
+
+        const user = this.state.user;
+
+        this.props.createUser(user);
+
     }
 
     render(){
@@ -158,12 +188,17 @@ class NewUser extends React.Component {
 }
 
 NewUser.propTypes = {
-    fetchUser: PropTypes.func.isRequired,
-    errors: PropTypes.object
+    createUser: PropTypes.func.isRequired,
+    fetchUsers: PropTypes.func.isRequired,
+    errors: PropTypes.object,
+    success: PropTypes.bool,
+    message_notify: PropTypes.sttring
 };
 
 const mapStateToProps = state => ({
-    errors: state.errors.items
+    errors: state.errors.items,
+    success: state.users.success,
+    message_notify: state.users.message
 });
 
-export default connect(mapStateToProps,{ fetchUsers, fetchUser })(NewUser);
+export default connect(mapStateToProps,{ fetchUsers, createUser, resetUsersMessage, resetUsersSuccess })(NewUser);

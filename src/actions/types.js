@@ -6,3 +6,5 @@ export const LOGIN = 'LOGIN';
 export const ADD_ERRORS = 'ADD_ERRORS';
 export const REMOVE_ERRORS = 'REMOVE_ERRORS';
 export const UPDATE_USER = 'UPDATE_USER';
+export const RESET_USERS_SUCCESS = 'RESET_USERS_SUCCESS';
+export const RESET_USERS_MESSAGE = 'RESET_USERS_MESSAGE';

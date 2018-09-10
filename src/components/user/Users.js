@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchUsers, fetchUser } from "../../actions/userActions";
+import { fetchUsers, fetchUser, resetUserErrors } from "../../actions/userActions";
 import UserEdit from "./UserEdit";
 import NewUser from "./NewUser";
 import { Badge, Card, CardBody, CardHeader, Col, Row, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
@@ -46,7 +46,8 @@ class Users extends React.Component {
 
         this.state = {
             modal:false,
-            userID:""
+            userID:"",
+            clearForm:false
         };
 
         this.onDeleteClick = this.onDeleteClick.bind(this);
@@ -59,7 +60,8 @@ class Users extends React.Component {
         this.setState({
             modal:false,
             userID:""
-        })
+        });
+        this.props.resetUserErrors();
     };
 
     componentWillMount(){
@@ -229,4 +231,4 @@ const mapStateToProps = state => ({
     users: state.users.items
 });
 
-export default connect(mapStateToProps,{ fetchUsers, fetchUser })(Users);
+export default connect(mapStateToProps,{ fetchUsers, fetchUser, resetUserErrors })(Users);

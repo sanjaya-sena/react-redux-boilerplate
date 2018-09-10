@@ -1,5 +1,5 @@
-import { FETCH_USERS, REMOVE_ERRORS, ADD_ERRORS, FETCH_USER } from "../actions/types";
-import {LOGIN} from "./types";
+import { FETCH_USERS, REMOVE_ERRORS, ADD_ERRORS, FETCH_USER, SET_SUCCESS_TRUE } from "../actions/types";
+import {LOGIN, RESET_USERS_MESSAGE, RESET_USERS_SUCCESS} from "./types";
 import axios from "axios/index";
 
 export const fetchUsers = () => dispatch => {
@@ -53,5 +53,53 @@ export const updateUser = (user) => dispatch => {
                 });
             }
         });
+};
+
+export const createUser = (user) => dispatch => {
+    dispatch({
+        type: RESET_USERS_SUCCESS
+    });
+
+    axios.post(`/users`, user).then(
+        (request)=>{
+            dispatch({
+                type: REMOVE_ERRORS
+            });
+
+            dispatch({
+                type: FETCH_USERS,
+                payload: request.data
+            });
+        }
+    )
+        .catch(error => {
+            if(error.response.status === 422 || error.response.status === 400){
+                // dispatch({
+                //     type: REMOVE_ERRORS
+                // });
+                dispatch({
+                    type: ADD_ERRORS,
+                    payload: error.response.data
+                });
+            }
+        });
+};
+
+export const resetUsersMessage = () => dispatch => {
+    dispatch({
+        type: RESET_USERS_MESSAGE
+    });
+};
+
+export const resetUsersSuccess = () => dispatch => {
+    dispatch({
+        type: RESET_USERS_SUCCESS
+    });
+};
+
+export const resetUserErrors = () => dispatch => {
+    dispatch({
+        type: REMOVE_ERRORS
+    });
 };
 
