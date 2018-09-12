@@ -204,7 +204,7 @@ class Users extends React.Component {
                         title={this.state.userID === ""?(<h5><i className="fa fa-user"> </i> New User</h5>):(<h5><i className="fa fa-user"> </i> Edit User</h5>)}
                         visible={this.state.modal}
                         onCancel={this.toggleClose}
-                        zIndex={1011}
+                        zIndex={2000}
                         centered
                         footer=""
                     >

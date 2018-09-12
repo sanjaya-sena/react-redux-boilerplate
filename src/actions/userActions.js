@@ -56,33 +56,35 @@ export const updateUser = (user) => dispatch => {
 };
 
 export const createUser = (user) => dispatch => {
+
     dispatch({
         type: RESET_USERS_SUCCESS
     });
 
     axios.post(`/users`, user).then(
         (request)=>{
-            dispatch({
-                type: REMOVE_ERRORS
-            });
+            if(request.response.status === 201){
 
-            dispatch({
-                type: FETCH_USERS,
-                payload: request.data
-            });
+                dispatch({
+                    type: REMOVE_ERRORS
+                });
+
+                this.fetchUsers();
+
+            }
         }
+
     )
         .catch(error => {
             if(error.response.status === 422 || error.response.status === 400){
+
                 // dispatch({
-                //     type: REMOVE_ERRORS
+                //     type: ADD_ERRORS,
+                //     payload: error.response.data
                 // });
-                dispatch({
-                    type: ADD_ERRORS,
-                    payload: error.response.data
-                });
             }
-        });
+        })
+
 };
 
 export const resetUsersMessage = () => dispatch => {

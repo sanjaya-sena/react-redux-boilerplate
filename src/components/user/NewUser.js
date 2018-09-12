@@ -3,32 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers, createUser, resetUsersSuccess, resetUsersMessage } from "../../actions/userActions";
 
-
+import { Formik } from 'formik';
+import * as Yup from "yup";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import {
-    Badge,
-    ButtonDropdown,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
     Col,
-    Collapse,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Fade,
     Form,
     FormGroup,
-    FormText,
     FormFeedback,
     Input,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText,
     Label,
     Row,
 } from 'reactstrap';
+
 import axios from "axios/index";
 import {FETCH_USER} from "../../actions/types";
 
@@ -46,7 +33,6 @@ class NewUser extends React.Component {
             roles:[]
         };
 
-        this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -60,33 +46,9 @@ class NewUser extends React.Component {
                 },
             });
 
-            this.setState({
-                user:{
-                    name:'',
-                    email:'',
-                    password:'',
-                    password_confirmation:'',
-                    role_id:'',
-                    is_active:''
-                }
-            });
-
             this.props.resetUsersSuccess();
             this.props.resetUsersMessage();
         }
-
-        // if (newProps.clearForm === true){
-        //     this.setState({
-        //         user:{
-        //             name:'',
-        //             email:'',
-        //             password:'',
-        //             password_confirmation:'',
-        //             role_id:'',
-        //             is_active:''
-        //         }
-        //     });
-        // }
     }
 
     componentDidMount(){
@@ -103,86 +65,171 @@ class NewUser extends React.Component {
         });
     };
 
-    onChange(e) {
-        this.setState({
-            user:{
-                ...this.state.user,
-                [e.target.name]:e.target.value
-            }});
-    }
+    onSubmit(values, { resetForm, setErrors, setSubmitting }){
 
-    onSubmit(e){
-        e.preventDefault();
+        setTimeout(() => {
+            console.log(values);
+            setSubmitting(false);
+        },2000);
 
-        notification.config({
-            placement: 'bottomRight',
-        });
+        // notification.config({
+        //     placement: 'bottomRight',
+        // });
 
-        const user = this.state.user;
+        const user = values;
 
         this.props.createUser(user);
 
     }
 
+    SignupSchema = Yup.object().shape({
+        name: Yup.string()
+            .min(2, 'Too Short!')
+            .max(50, 'Too Long!')
+            .required('Name is required'),
+        email: Yup.string()
+            .email('Invalid email')
+            .required('Email is required'),
+        password: Yup.string()
+            .min(6, 'Minimum password length is 6')
+            .required('Password is required'),
+        password_confirmation: Yup.string()
+            .oneOf([Yup.ref('password'), null],'Password confirmation doesn\'t match')
+            .required('Password confirmation is required'),
+        role_id: Yup.string()
+            .required('Role is required'),
+        is_active: Yup.string()
+            .required('Status is required')
+    });
+
     render(){
 
         let rolesSelect = this.state.roles.map((role)=>{
             return (
-                <option value={role.id}>{role.name}  </option>
+                <option value={role.id}>{role.name}</option>
             );
         });
 
         return (
+            <Formik
+                initialValues={{ email: '', password: '', password_confirmation: '', role_id: '', is_active: '', name: '' }}
+                validationSchema={this.SignupSchema}
+                onSubmit={this.onSubmit}
+            >
+                {({
+                      values,
+                      errors,
+                      touched,
+                      handleChange,
+                      handleBlur,
+                      handleSubmit,
+                      isSubmitting,
+                      /* and other goodies */
+                  }) => (
 
-            <Form className="" onSubmit={this.onSubmit}>
-                <FormGroup>
-                    <Label htmlFor="inputWarning2i">Name</Label>
-                    <Input name="name"  placeholder="Email" value={this.state.user.name}  onChange={this.onChange} className={this.props.errors.name?'form-control is-invalid':'form-control'}  />
-                    <FormFeedback  className="help-block">{this.props.errors.name ? this.props.errors.name[0]:''}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                    <Label htmlFor="inputWarning2i">Email</Label>
-                    <Input name="email"  placeholder="Email" value={this.state.user.email}  onChange={this.onChange} className={this.props.errors.email?'form-control is-invalid':'form-control'} />
-                    <FormFeedback  className="help-block">{this.props.errors.email ? this.props.errors.email[0]:''}</FormFeedback>
-                    {/*<FormFeedback valid className="help-block"><i className="fa fa-check"> </i></FormFeedback>*/}
-                </FormGroup>
-                <FormGroup>
-                    <Label htmlFor="inputWarning2i">Password</Label>
-                    <Input name="password" type="password"  placeholder="Password" value={this.state.user.password}  onChange={this.onChange} className={this.props.errors.password?'form-control is-invalid':'form-control'} />
-                    <FormFeedback  className="help-block">{this.props.errors.password ? this.props.errors.password[0]:''}</FormFeedback>
-                </FormGroup>
-                <FormGroup>
-                    <Label htmlFor="inputWarning2i">Password</Label>
-                    <Input name="password_confirmation" type="password"  placeholder="Password" value={this.state.user.password_confirmation}  onChange={this.onChange} className={this.props.errors.password?'form-control is-invalid':'form-control'} />
-                    <FormFeedback  className="help-block">{this.props.errors.password ? this.props.errors.password[0]:''}</FormFeedback>
-                </FormGroup>
-                <Row>
-                    <Col md={6}>
+
+                    <form className="" onSubmit={handleSubmit}>
                         <FormGroup>
-                            <Label htmlFor="role">Role</Label>
-                            <Input type="select" name="role_id" onChange={this.onChange} className={this.props.errors.role_id?'form-control is-invalid':'form-control'}>
-                                <option value="">Select</option>
-                                {rolesSelect}
-                            </Input>
-                            <FormFeedback  className="help-block">{this.props.errors.role_id ? this.props.errors.role_id[0]:''}</FormFeedback>
+                            <Label htmlFor="name">Name</Label>
+                            <Input
+                                type="text"
+                                name="name"
+                                placeholder="Name"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.name}
+                                className={errors.name && touched.name?'form-control is-invalid':'form-control'} />
+                            <FormFeedback  className="help-block">
+                                {errors.name && touched.name && errors.name}
+                            </FormFeedback>
                         </FormGroup>
-                    </Col>
-                    <Col md={6}>
                         <FormGroup>
-                            <Label htmlFor="status">Status</Label>
-                            <Input type="select" name="is_active" onChange={this.onChange} className={this.props.errors.is_active?'form-control is-invalid':'form-control'}>
-                                <option value="">Select</option>
-                                <option value={1} >Active</option>
-                                <option value={0} >Disabled</option>
-                            </Input>
-                            <FormFeedback  className="help-block">{this.props.errors.is_active ? this.props.errors.is_active[0]:''}</FormFeedback>
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                type="text"
+                                name="email"
+                                placeholder="Email"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.email}
+                                className={errors.email && touched.email?'form-control is-invalid':'form-control'} />
+                            <FormFeedback  className="help-block">
+                                {errors.email && touched.email && errors.email}
+                            </FormFeedback>
                         </FormGroup>
-                    </Col>
-                </Row>
-                <ModalFooter>
-                    <Button color="primary">Save</Button>
-                </ModalFooter>
-            </Form>
+                        <FormGroup>
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                type="password"
+                                name="password"
+                                placeholder="Password"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.password}
+                                className={errors.password && touched.password?'form-control is-invalid':'form-control'} />
+                            <FormFeedback  className="help-block">
+                                {errors.password && touched.password && errors.password}
+                            </FormFeedback>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label htmlFor="password_confirmation">Password Confirmation</Label>
+                            <Input
+                                type="password"
+                                name="password_confirmation"
+                                placeholder="Password Confirmation"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.password_confirmation}
+                                className={errors.password_confirmation && touched.password_confirmation?'form-control is-invalid':'form-control'} />
+                            <FormFeedback  className="help-block">
+                                {errors.password_confirmation && touched.password_confirmation && errors.password_confirmation}
+                            </FormFeedback>
+                        </FormGroup>
+                        <Row>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label htmlFor="role">Role</Label>
+                                    <Input
+                                        type="select"
+                                        name="role_id"
+                                        placeholder="Role"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.role_id && touched.role_id?'form-control is-invalid':'form-control'}>
+                                        <option value="">Select a role</option>
+                                        {rolesSelect}
+                                    </Input>
+                                    <FormFeedback  className="help-block">
+                                        {errors.role_id && touched.role_id && errors.role_id}
+                                    </FormFeedback>
+                                </FormGroup>
+                            </Col>
+                            <Col md={6}>
+                                <FormGroup>
+                                    <Label htmlFor="status">Status</Label>
+                                    <Input
+                                        type="select"
+                                        name="is_active"
+                                        placeholder="Status"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.is_active && touched.is_active?'form-control is-invalid':'form-control'}>>
+                                        <option value="">Select a status</option>
+                                        <option value={1} >Active</option>
+                                        <option value={0} >Disabled</option>
+                                    </Input>
+                                    <FormFeedback  className="help-block">
+                                        {errors.role_id && touched.role_id && errors.role_id}
+                                    </FormFeedback>
+                                </FormGroup>
+                            </Col>
+                        </Row>
+                        <ModalFooter>
+                            <Button color="primary" type="submit" disabled={isSubmitting}>Save</Button>
+                        </ModalFooter>
+                    </form>
+                )}
+            </Formik>
         );
     };
 }
@@ -201,4 +248,15 @@ const mapStateToProps = state => ({
     message_notify: state.users.message
 });
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchUsers: () => {
+            dispatch(fetchUsers().then((response)=>{
+                console.log(response);
+                })
+            )
+        }
+    }
+};
+// https://medium.com/@rajaraodv/a-guide-for-building-a-react-redux-crud-app-7fe0b8943d0f
 export default connect(mapStateToProps,{ fetchUsers, createUser, resetUsersMessage, resetUsersSuccess })(NewUser);
