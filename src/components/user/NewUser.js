@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import {bindActionCreators} from 'redux';
 import { fetchUsers, createUser, resetUsersSuccess, resetUsersMessage } from "../../actions/userActions";
 
 import { Formik } from 'formik';
@@ -63,6 +64,10 @@ class NewUser extends React.Component {
             console.log(error.response.data.data);
 
         });
+        this.props.dispatch(fetchUsers()).then(()=>{
+            alert(this.props.value)
+        })
+        // this.props.actions.fetchUsers();
     };
 
     onSubmit(values, { resetForm, setErrors, setSubmitting }){
@@ -250,13 +255,13 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchUsers: () => {
-            dispatch(fetchUsers().then((response)=>{
-                console.log(response);
-                })
-            )
-        }
-    }
+        actions: bindActionCreators({
+            fetchUsers
+        }, dispatch)
+    };
 };
 // https://medium.com/@rajaraodv/a-guide-for-building-a-react-redux-crud-app-7fe0b8943d0f
-export default connect(mapStateToProps,{ fetchUsers, createUser, resetUsersMessage, resetUsersSuccess })(NewUser);
+// https://medium.com/skyshidigital/simplify-redux-request-success-failure-pattern-ce77340eae06
+// https://daveceddia.com/where-fetch-data-redux/
+// https://www.sohamkamani.com/blog/2016/06/05/redux-apis/
+export default connect()(NewUser);

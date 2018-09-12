@@ -8,7 +8,10 @@ export const fetchUsers = () => dispatch => {
         .then(users => dispatch({
             type: FETCH_USERS,
             payload: users
-        }));
+        })).then(
+            res => console.log(res)
+    );
+    return Promise.resolve()
 };
 
 export const fetchUser = (userId,func) => dispatch => {
@@ -25,6 +28,7 @@ export const fetchUser = (userId,func) => dispatch => {
         console.log(error.response.data.data);
 
     });
+
 
 };
 
