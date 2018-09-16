@@ -1,11 +1,25 @@
-import {FETCH_USERS, UPDATE_USER, FETCH_USER, RESET_USERS_MESSAGE, RESET_USERS_SUCCESS} from "../actions/types";
+import {FETCH_USERS,
+    UPDATE_USER_PENDING, UPDATE_USER_SUCCESS, UPDATE_USER_ERROR,
+    FETCH_USER_PENDING, FETCH_USER_ERROR, FETCH_USER_SUCCESS,
+    FETCH_USERS_START, RECEIVE_USERS, FETCH_USERS_ERROR,
+    CREATE_USER_COMPLETED, CREATE_USER_PENDING, CREATE_USER_ERROR } from "../actions/types";
 
 const initialState = {
-    items: [],
-    success:false,
-    message:"",
-    item:{},
-    user:{}
+    users:{
+        data:{},
+        fetching:false,
+        fetched:false,
+        success:false,
+        error:null
+    },
+    user:{
+        data:null,
+        loading:false,
+        fetched:false,
+        updated:false,
+        error:null
+    },
+
 };
 
 export default function (state = initialState, action) {
@@ -13,29 +27,103 @@ export default function (state = initialState, action) {
         case FETCH_USERS:
             return {
                 ...state,
-                items:action.payload.users,
-                success: action.payload.success,
-                message: action.payload.message
+                users:{
+                    data:action.payload
+                }
             };
-        case UPDATE_USER:
+        case FETCH_USERS_START:
             return {
                 ...state,
-                item:action.payload
+                users:{
+                    ...state.users,
+                    fetching:true
+                }
             };
-        case FETCH_USER:
+        case FETCH_USERS_ERROR:
             return {
                 ...state,
-                user:action.payload
+                users:{
+                    error:action.payload
+                }
             };
-        case RESET_USERS_MESSAGE:
+        case RECEIVE_USERS:
             return {
                 ...state,
-                message:""
+                users:{
+                    data:action.payload,
+                    fetched:true,
+                    fetching:false
+                }
             };
-        case RESET_USERS_SUCCESS:
+        case UPDATE_USER_PENDING:
             return {
                 ...state,
-                success:false
+                user:{
+                    loading:true
+                }
+            };
+        case UPDATE_USER_SUCCESS:
+            return {
+                ...state,
+                user:{
+                    data:action.payload,
+                    loading:false,
+                    updated:true
+                }
+            };
+        case UPDATE_USER_ERROR:
+            return {
+                ...state,
+                user:{
+                    error:action.payload
+                }
+            };
+        case FETCH_USER_PENDING:
+            return {
+                ...state,
+                user:{
+                    loading:true
+                }
+            };
+        case FETCH_USER_SUCCESS:
+            return {
+                ...state,
+                user:{
+                    data:action.payload,
+                    loading:false,
+                    fetched:true
+                }
+            };
+        case FETCH_USER_ERROR:
+            return {
+                ...state,
+                user:{
+                    error:action.payload
+                }
+            };
+        case CREATE_USER_PENDING:
+            return {
+                ...state,
+                user:{
+                    loading:true
+                }
+            };
+        case CREATE_USER_COMPLETED:
+            return {
+                ...state,
+                user:{
+                    data:action.payload,
+                    loading:false,
+                    success:true,
+                    error:null
+                }
+            };
+        case CREATE_USER_ERROR:
+            return {
+                ...state,
+                user:{
+                    error:action.payload
+                }
             };
         default: return state;
     }

@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchUsers, fetchUser, resetUserErrors } from "../../actions/userActions";
+import { fetchUsers, fetchUser } from "../../actions/userActions";
 import UserEdit from "./UserEdit";
 import NewUser from "./NewUser";
 import { Badge, Card, CardBody, CardHeader, Col, Row, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { Table, Divider, Tag, Button, Modal } from 'antd';
+import { Table, Divider, Tag, Button, Modal, Spin } from 'antd';
 
 
 import { HashRouter, Route, Switch } from 'react-router-dom';
@@ -61,7 +61,6 @@ class Users extends React.Component {
             modal:false,
             userID:""
         });
-        this.props.resetUserErrors();
     };
 
     componentWillMount(){
@@ -105,7 +104,7 @@ class Users extends React.Component {
     };
 
     render(){
-
+        const {fetching, fetched, users} = this.props;
         return(
             <div className="animated fadeIn">
 
@@ -128,7 +127,8 @@ class Users extends React.Component {
 
                                     <Col lg={12}>
 
-                                        <Table dataSource={this.props.users} size="small" scroll={{ x: 240 }}>
+                                        <Table dataSource={fetched?this.props.users:[]} loading={fetching} size="small"
+                                               scroll={{x: 240}}>
                                             <Column
                                                 title="Name"
                                                 dataIndex="name"
@@ -156,9 +156,9 @@ class Users extends React.Component {
                                                 key="is_active"
                                                 render={is_active => (
                                                     <span>
-                            {is_active===1?(
+                            {is_active === 1 ? (
                                 <Tag color="green" key={is_active}>Active</Tag>
-                            ):(
+                            ) : (
                                 <Tag color="red" key={is_active}>Disabled</Tag>
                             )}
 
@@ -175,7 +175,8 @@ class Users extends React.Component {
                                                 render={(id) => (
                                                     <span>
                                                         <ButtonGroup>
-                                                          <Button id={id} onClick={this.onEditClick} type="default" icon="edit"/>
+                                                          <Button id={id} onClick={this.onEditClick} type="default"
+                                                                  icon="edit"/>
                                                           <Button type="danger" icon="delete"/>
                                                         </ButtonGroup>
                                                     </span>
@@ -183,8 +184,6 @@ class Users extends React.Component {
                                             />
 
                                         </Table>
-
-
                                     </Col>
 
                                 </Row>
@@ -208,7 +207,7 @@ class Users extends React.Component {
                         centered
                         footer=""
                     >
-                        {this.state.userID === ""?(<NewUser />):(<UserEdit userID={this.state.userID} />)}
+                        {this.state.userID === ""?(<NewUser closeModal={this.toggleClose}/>):(<UserEdit userID={this.state.userID} closeModal={this.toggleClose}/>)}
 
                     </Modal>
 
@@ -224,11 +223,14 @@ class Users extends React.Component {
 Users.propTypes = {
     fetchUsers: PropTypes.func.isRequired,
     fetchUser: PropTypes.func.isRequired,
-    users: PropTypes.array.isRequired
+    users: PropTypes.array
 };
 
 const mapStateToProps = state => ({
-    users: state.users.items
+    users: state.users.users.data,
+    fetching: state.users.users.fetching,
+    fetched: state.users.users.fetched,
+    error: state.users.users.error,
 });
 
-export default connect(mapStateToProps,{ fetchUsers, fetchUser, resetUserErrors })(Users);
+export default connect(mapStateToProps,{ fetchUsers, fetchUser })(Users);
